@@ -17,8 +17,10 @@ def main():
     c4.draw(450, 450, 600, 600)
 
     c1.draw_move(c2)
-    c2.draw_move(c4)
-    c4.draw_move(c3)
+    c2.draw_move(c3)
+    c3.draw_move(c4)
+    c4.draw_move(c1)
+    
 
     win.wait_for_close()
 
