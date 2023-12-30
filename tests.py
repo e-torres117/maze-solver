@@ -15,9 +15,9 @@ class Test(unittest.TestCase):
             num_rows,
         )
 
-    def test_maze_create_cells_large(self):
-        num_cols = 16
-        num_rows = 12
+    def test_maze_create_cells_2(self):
+        num_cols = 20
+        num_rows = 16
         m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
         self.assertEqual(
             len(m1._cells),
@@ -27,6 +27,7 @@ class Test(unittest.TestCase):
             len(m1._cells[0]),
             num_rows,
         )
+
 
 
 if __name__ == "__main__":

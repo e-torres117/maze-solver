@@ -1,27 +1,18 @@
 from window import Window
-from cell import Cell
+from maze import Maze
 
 def main():
-    win = Window(1000,800)
+   
+    num_cols = 10
+    num_rows = 12
+    cell = 100
+    window_x = 1200
+    window_y = 800
+    size_x = (window_x - 2 * cell) // num_cols
+    size_y = (window_y - 2 * cell) // num_rows
+    win = Window(window_x,window_y)
 
-    c1 = Cell(win)
-    c1.draw(300, 300, 450 ,450)    
-
-    c2 = Cell(win)
-    c2.draw(300,450, 450 ,600)
-
-    c3 = Cell(win)
-    c3.draw(450, 300, 600, 450)
-
-    c4 = Cell(win)
-    c4.draw(450, 450, 600, 600)
-
-    c1.draw_move(c2)
-    c2.draw_move(c3)
-    c3.draw_move(c4)
-    c4.draw_move(c1)
-    
-
+    m1 = Maze(cell, cell, num_rows, num_cols, size_x, size_y, win)
     win.wait_for_close()
 
 if __name__ == "__main__":
