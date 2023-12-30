@@ -15,18 +15,17 @@ class Test(unittest.TestCase):
             num_rows,
         )
 
-    def test_maze_create_cells_2(self):
-        num_cols = 20
-        num_rows = 15
+    def test_reset_visited_cells(self):
+        num_cols = 10
+        num_rows = 10
         m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
-        self.assertEqual(
-            len(m1._cells),
-            num_cols,
-        )
-        self.assertEqual(
-            len(m1._cells[0]),
-            num_rows,
-        )
+        for i in m1._cells:
+            for j in i:
+                self.assertEqual(
+                    cell._visited,
+                    False
+                ) 
+
 
 
 
