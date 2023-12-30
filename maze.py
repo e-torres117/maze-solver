@@ -14,8 +14,6 @@ class Maze:
         win = None,
         seed = None
     ):
-        if seed not None:
-            random.seed(random)
 
         self._x1 = x1
         self._y1 = y1
@@ -24,21 +22,27 @@ class Maze:
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
+        self.seed = seed
         self._cells = []
+        
+        if self.seed:
+            random.seed(random)  
 
         self._create_cells()
         self._break_entrance_break_exit()
+        self._break_walls_r(0,0)
+      
 
     def _create_cells(self):
 
-        for i in range(self._num_cols):
-            col = []
-            for j in range(self._num_rows):
-                col.append(Cell(self._win))
-            self._cells.append(col)
+        for i in range(self._num_rows):
+            cols = []
+            for j in range(self._num_cols):
+                cols.append(Cell(self._win))
+            self._cells.append(cols)
         
-        for i in range(self._num_cols):
-            for j in range(self._num_rows):
+        for i in range(self._num_rows):
+            for j in range(self._num_cols):
                 self._draw_cell(i, j)
     
     def _draw_cell(self, i , j):
@@ -63,7 +67,7 @@ class Maze:
             return
 
         self._win.redraw()
-        time.sleep(0.05)
+        #time.sleep(0.05)
 
     def _break_entrance_break_exit(self):
         if self._win is None:
@@ -74,8 +78,64 @@ class Maze:
         self._draw_cell(0,0)
 
         # Exit 
-        self._cells[self._num_cols - 1][self._num_rows - 1].has_bottom_wall = False
-        self._draw_cell(self._num_cols -1,self._num_rows - 1)
+        self._cells[self._num_rows - 1][self._num_cols - 1].has_bottom_wall = False
+        self._draw_cell(self._num_rows -1,self._num_cols - 1)
 
     def _break_walls_r(self, i, j):
-        pass
+        self._cells[i][j]._visited = True
+
+        while True:
+            to_visit = []
+
+            # top
+            if j < self._num_cols - 1 and not self._cells[i][j + 1]._visited:
+                to_visit.append((i, j + 1))
+                print("top bound check")
+
+            # right
+            if  i < self._num_rows - 1 and not self._cells[i + 1][j]._visited:
+                to_visit.append((i + 1, j))
+            
+            # bottom
+            if j > 0 and not self._cells[i][j - 1]._visited:
+                to_visit.append((i, j - 1))
+
+            # left
+            ni, nj = i - 1, j
+            if i > 0 and not self._cells[i - 1][j]._visited:
+                to_visit.append((i - 1, j))
+
+            if not to_visit:
+                self._draw_cell(i, j)
+                break
+            
+            rand_index = random.randint(0, len(to_visit) - 1)
+            next_i, next_j = to_visit[rand_index]
+
+            
+            # Knock down the walls between the current cell and the chosen cell.
+            # right
+            if next_i == i + 1:
+                self._cells[i][j].has_right_wall = False
+                self._cells[next_i][j].has_left_wall = False
+                
+            # top    
+            if next_j == j - 1:
+                self._cells[i][j].has_top_wall = False
+                self._cells[i][next_j].has_bottom_wall = False
+                print("top wall break")
+
+            # left
+            if next_i == i - 1:
+                self._cells[i][j].has_left_wall = False
+                self._cells[next_i][j].has_right_wall = False
+                
+            # bottom 
+            if next_j == j + 1:
+                self._cells[i][j].has_bottom_wall = False
+                self._cells[i][next_j].has_top_wall = False
+                print("bottom wall break")
+         
+            
+            self._break_walls_r(next_i, next_j)
+              
