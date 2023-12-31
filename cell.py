@@ -83,9 +83,9 @@ class Cell:
 
         # move up
         elif self._y1 > to_cell._y1:
-            line = Line(Point(mid_x,mid_y),Point(to_mid_x,self._y1))
+            line = Line(Point(mid_x,mid_y),Point(mid_x,self._y1))
             self._win.draw_line(line,color)
-            line = Line(Point(to_mid_x,to_cell._y2),Point(to_mid_x,to_mid_x))
+            line = Line(Point(to_mid_x,to_cell._y2),Point(to_mid_x,to_mid_y))
             self._win.draw_line(line,color)
 
         # move down

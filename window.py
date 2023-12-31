@@ -23,6 +23,7 @@ class Window:
 
     def close(self):
         self.WINDOW_RUN = False
+        print("Window has closed")
             
 
 class Point:
